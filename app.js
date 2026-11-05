@@ -1,141 +1,35 @@
-// ============================================================
-// app.js — what your site DOES.
-// Plain JavaScript, no libraries, no installs.
-// It uses STARTUP and LISTINGS from data.js (loaded first).
-// ============================================================
-
-(function () {
-  "use strict";
-
-  // ----------------------------------------------------------
-  // 1. Saving things in the browser (localStorage).
-  //    This only remembers things on THIS browser on THIS device.
-  //    Your teammates and your customers will NOT see it.
-  //    A real product would need a server and a database for that.
-  // ----------------------------------------------------------
-  const storage = {
-    get: function (key, fallback) {
-      try {
-        const saved = localStorage.getItem(key);
-        return saved === null ? fallback : JSON.parse(saved);
-      } catch (error) {
-        return fallback; // storage blocked or broken: just carry on
-      }
-    },
-    set: function (key, value) {
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
-      } catch (error) {
-        // storage blocked (e.g. private window): ignore
-      }
-    }
-  };
-
-  let savedIds = storage.get("savedIds", []);
-
-  // ----------------------------------------------------------
-  // 2. Put the startup's name and pitch on the page.
-  // ----------------------------------------------------------
-  document.title = STARTUP.name;
-  document.getElementById("brand-name").textContent = STARTUP.name;
-  document.getElementById("tagline").textContent = STARTUP.tagline;
-  document.getElementById("pitch").textContent = STARTUP.pitch;
-
-  // ----------------------------------------------------------
-  // 3. Views: show one section at a time, based on the #link in the address bar.
-  // ----------------------------------------------------------
-  function showView() {
-    const requested = (window.location.hash || "#home").slice(1);
-    const views = document.querySelectorAll("[data-view]");
-    const exists = Array.prototype.some.call(views, function (view) {
-      return view.id === requested;
-    });
-    const current = exists ? requested : "home";
-
-    views.forEach(function (view) {
-      view.hidden = view.id !== current;
-    });
-
-    document.querySelectorAll("nav a").forEach(function (link) {
-      if (link.getAttribute("href") === "#" + current) {
-        link.setAttribute("aria-current", "page");
-      } else {
-        link.removeAttribute("aria-current");
-      }
-    });
-
-    window.scrollTo(0, 0);
-  }
-
-  window.addEventListener("hashchange", showView);
-
-  // ----------------------------------------------------------
-  // 4. Explore page: build one card per listing.
-  //    We use textContent (not innerHTML) so text is always shown
-  //    as text — a basic security habit.
-  // ----------------------------------------------------------
-  const grid = document.getElementById("listing-grid");
-  const searchBox = document.getElementById("search-box");
-  const emptyMessage = document.getElementById("empty-message");
-  const savedCount = document.getElementById("saved-count");
-
-  function makeCard(item) {
-    const card = document.createElement("article");
-    card.className = "card";
-
-    const tag = document.createElement("span");
-    tag.className = "tag";
-    tag.textContent = item.category;
-
-    const title = document.createElement("h2");
-    title.textContent = item.name;
-
-    const text = document.createElement("p");
-    text.textContent = item.description;
-
-    const isSaved = savedIds.indexOf(item.id) !== -1;
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "button secondary";
-    button.textContent = isSaved ? "Saved ✓" : "Save";
-    button.setAttribute("aria-pressed", isSaved ? "true" : "false");
-    button.addEventListener("click", function () {
-      toggleSaved(item.id);
-    });
-
-    card.append(tag, title, text, button);
-    return card;
-  }
-
-  function toggleSaved(id) {
-    if (savedIds.indexOf(id) === -1) {
-      savedIds.push(id);
-    } else {
-      savedIds = savedIds.filter(function (savedId) { return savedId !== id; });
-    }
-    storage.set("savedIds", savedIds);
-    renderListings();
-  }
-
-  function renderListings() {
-    const query = searchBox.value.trim().toLowerCase();
-    const matches = LISTINGS.filter(function (item) {
-      const text = (item.name + " " + item.category + " " + item.description).toLowerCase();
-      return text.indexOf(query) !== -1;
-    });
-
-    grid.replaceChildren.apply(grid, matches.map(makeCard));
-    emptyMessage.hidden = matches.length > 0;
-    savedCount.textContent = savedIds.length === 0
-      ? "Tap Save on anything you like."
-      : "You've saved " + savedIds.length + " item(s) on this device.";
-  }
-
-  searchBox.addEventListener("input", renderListings);
-
-  // ----------------------------------------------------------
-  // 5. Start up.
-  // ----------------------------------------------------------
-  renderListings();
-  showView();
+/* Browser-only demo. No accounts, external services or personal data. */
+(() => {
+'use strict';
+const $=id=>document.getElementById(id), KEY='campusfuel-demo-v1';
+const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+function initial(){return {goal:2200,favourites:[1,5],logs:days.map((_,i)=>i===6?[{food:1,meal:'Breakfast',servings:1},{food:2,meal:'Breakfast',servings:1},{food:5,meal:'Lunch',servings:1}]:[{food:1,meal:'Breakfast',servings:1},{food:3,meal:'Breakfast',servings:1},{food:5+i%3,meal:'Lunch',servings:1},{food:8+i%3,meal:'Dinner',servings:1},{food:11+i%4,meal:'Snacks',servings:1}])};}
+let state=initial(),day=6,timer;
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&[2000,2200,2400,2600].includes(s.goal)&&Array.isArray(s.favourites)&&Array.isArray(s.logs)&&s.logs.length===7&&s.logs.every(l=>Array.isArray(l)&&l.every(e=>FOODS.some(f=>f.id===e.food)&&MEALS.includes(e.meal)&&Number.isFinite(e.servings)&&e.servings>=.25&&e.servings<=10)))state=s;}catch(e){}
+function announce(text){$('status').textContent=text;clearTimeout(timer);timer=setTimeout(()=>$('status').textContent='',4000);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){announce('Storage unavailable. Changes last only until this page closes.');}}
+function totals(entries){return entries.reduce((t,e)=>{const f=FOODS.find(f=>f.id===e.food);for(const k of ['calories','protein','carbs','fat'])t[k]+=f[k]*e.servings;return t;},{calories:0,protein:0,carbs:0,fat:0});}
+function el(tag,text,cls){const n=document.createElement(tag);if(text!==null)n.textContent=text;if(cls)n.className=cls;return n;}
+function button(text,action,cls,label){const b=el('button',text,cls);b.type='button';if(label)b.setAttribute('aria-label',label);b.addEventListener('click',action);return b;}
+function render(){
+const t=totals(state.logs[day]),pct=Math.round(t.calories/state.goal*100);
+$('calories').replaceChildren(document.createTextNode(Math.round(t.calories).toLocaleString()+' '),el('small','kcal logged'));
+const difference=state.goal-Math.round(t.calories);$('remaining').textContent=Math.round(Math.abs(difference)).toLocaleString()+(difference>=0?' kcal remaining in the demo goal':' kcal above the demo goal');
+$('percent').textContent=pct+'%';$('ring').style.setProperty('--fill',Math.min(pct,100)+'%');$('goal').value=state.goal;
+$('macros').replaceChildren();const energy=t.protein*4+t.carbs*4+t.fat*9;
+[['protein','Protein','#739264',4],['carbs','Carbs','#d6ac63',4],['fat','Fat','#aa95ba',9]].forEach(([key,label,color,mult])=>{const row=el('div',null,'macro');row.append(el('span',label),el('strong',Math.round(t[key])+' g'));const track=el('div',null,'track'),fill=el('span');fill.style.width=(energy?t[key]*mult/energy*100:0)+'%';fill.style.setProperty('--c',color);track.append(fill);$('macros').append(row,track);});
+$('entry-count').textContent=state.logs[day].length+' ITEMS';$('meal-log').replaceChildren();
+MEALS.forEach(meal=>{const block=el('section',null,'meal-block'),head=el('div',null,'meal-heading'),entries=state.logs[day].filter(e=>e.meal===meal);head.append(el('h3',meal),el('span',Math.round(totals(entries).calories)+' kcal'));block.append(head);if(!entries.length)block.append(el('p','Nothing logged yet. Choose a food in Quick add.','empty'));
+state.logs[day].forEach((e,index)=>{if(e.meal!==meal)return;const f=FOODS.find(f=>f.id===e.food),row=el('div',null,'entry'),info=el('div'),actions=el('div',null,'entry-actions');info.append(el('strong',f.name),el('small',e.servings+' × '+f.serving));actions.append(el('span',Math.round(f.calories*e.servings)+' kcal'),button('×',()=>{state.logs[day].splice(index,1);save();render();announce(f.name+' removed.');},'remove','Remove '+f.name+' from '+meal));row.append(info,actions);block.append(row);});$('meal-log').append(block);});renderFoods();renderProgress();
+}
+function renderFoods(){const q=$('search').value.trim().toLowerCase(),only=$('favourites-only').checked;$('food-list').replaceChildren();const foods=FOODS.filter(f=>(f.name+' '+f.category).toLowerCase().includes(q)&&(!only||state.favourites.includes(f.id)));if(!foods.length){$('food-list').append(el('p','No foods match. Try another search or turn off the favourites filter.','empty'));return;}
+foods.forEach(f=>{const row=el('div',null,'food'),info=el('div'),actions=el('div',null,'food-buttons');info.append(el('strong',f.name),el('small',f.serving+' · '+f.calories+' kcal'),el('small',f.protein+'g protein · '+f.carbs+'g carbs · '+f.fat+'g fat'));const saved=state.favourites.includes(f.id),star=button(saved?'★':'☆',()=>{state.favourites=saved?state.favourites.filter(id=>id!==f.id):[...state.favourites,f.id];save();renderFoods();announce(saved?'Favourite removed.':'Favourite saved.');},'star',(saved?'Unsave ':'Save ')+f.name);star.setAttribute('aria-pressed',String(saved));actions.append(star,button('+',()=>{if(!$('servings').reportValidity())return;const servings=Number($('servings').value);if(!Number.isFinite(servings)||servings<.25||servings>10)return;state.logs[day].push({food:f.id,meal:$('meal').value,servings});save();render();announce(f.name+' added to '+$('meal').value.toLowerCase()+'.');},'', 'Add '+f.name));row.append(info,actions);$('food-list').append(row);});}
+function renderProgress(){const values=state.logs.map(l=>totals(l).calories),max=Math.max(...values,1);$('chart').replaceChildren();values.forEach((value,i)=>{const col=el('div',null,'bar-col'),bar=el('div',null,'bar');bar.style.height=(value/max*190)+'px';col.append(el('strong',String(Math.round(value))),bar,el('span',days[i]));$('chart').append(col);});$('week-stats').replaceChildren();[[Math.round(values.reduce((a,b)=>a+b,0)/7).toLocaleString(),'average kcal / day'],[state.logs.flat().length,'foods logged'],[state.favourites.length,'saved favourites']].forEach(([n,label])=>{const item=el('div');item.append(el('strong',String(n)),el('small',label));$('week-stats').append(item);});}
+function simulate(){const weeks=Number($('tenure').value);$('simulation').replaceChildren();[[weeks*7,'days of history'],[weeks===1?3:weeks===4?9:18,'saved favourites'],[weeks===1?2:weeks===4?5:8,'repeat meal routines']].forEach(([n,label])=>{const item=el('div');item.append(el('strong',String(n)),el('span',label));$('simulation').append(item);});}
+function view(){const target=location.hash.slice(1),id=['diary','progress','insights'].includes(target)?target:'diary';document.querySelectorAll('[data-view]').forEach(s=>s.hidden=s.id!==id);document.querySelectorAll('nav a').forEach(a=>{if(a.hash==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});}
+days.forEach((d,i)=>{const o=el('option',d+' · Demo day '+(i+1));o.value=i;$('day').append(o);});$('day').value=day;MEALS.forEach(m=>$('meal').append(el('option',m)));$('meal').value='Snacks';
+$('day').addEventListener('change',()=>{day=Number($('day').value);render();});$('goal').addEventListener('change',()=>{state.goal=Number($('goal').value);save();render();announce('Demo goal updated.');});$('search').addEventListener('input',renderFoods);$('favourites-only').addEventListener('change',renderFoods);$('tenure').addEventListener('change',simulate);window.addEventListener('hashchange',view);
+$('reset').addEventListener('click',()=>{if(!confirm('Reset all demo edits and favourites to the sample week?'))return;state=initial();save();render();announce('Sample week restored.');});
+$('export').addEventListener('click',()=>{const lines=[['Demo day','Meal','Food','Servings','Calories','Protein g','Carbs g','Fat g']];state.logs.forEach((entries,i)=>entries.forEach(e=>{const f=FOODS.find(f=>f.id===e.food);lines.push([days[i],e.meal,f.name,e.servings,...['calories','protein','carbs','fat'].map(k=>Math.round(f[k]*e.servings*100)/100)]);}));const csv=lines.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n'),url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})),a=el('a');a.href=url;a.download='campusfuel-demo-history.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);announce('Demo history exported.');});
+render();simulate();view();
 })();

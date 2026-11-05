@@ -1,45 +1,55 @@
-# Project log
+# CampusFuel project log
 
-Keep this up to date as you go — a few lines per work session is enough. It's much harder to reconstruct at the end.
+Startup name: CampusFuel (working name)
+Live site: Not yet published
+Repository: https://github.com/Rsnipes20/campusfuel
 
-**Team name:**
-**Startup name:**
-**Live site link:**
+## Session — November 5, 2026 — AI-assisted initial build
 
----
+- User direction: “tracking claories”; “i want you to make it all for me”. User supplied the professor's GitHub template and assignment files.
+- Tool: ChatGPT. This was not a Copilot session and was not performed by the student in Codespaces.
+- Goal: prepare a plain HTML/CSS/JavaScript calorie-tracker prototype, based on the template's file structure and assignment restrictions.
+- Work completed: replaced the sample listing experience with food search, four meal categories, fractional servings, calorie/macro totals, favourites, a seven-day view, local browser persistence, CSV export and a switching-cost illustration.
+- Data: 16 fictional food entries. No account, payment, real nutrition API, personal identifiers or external libraries.
+- Check results: JavaScript syntax passed. In-browser adding 1.5 bananas increased the initial 950 calories to 1,108 displayed calories; the entry survived reload. Removal and the Week 12 illustration were checked.
+- Problem found: rounding the consumed and remaining calories independently could produce a one-calorie discrepancy. Remaining calories now use the rounded consumed total.
+- Preview setup issue: the preview service required a subdirectory instead of the site root. A separate preview copy solved this; preview configuration is excluded from the student deliverable.
+- Commit status: no student GitHub commits made. Do not present this session as several sessions or fabricate commit history.
+- Business case: a worksheet was prepared. The student's final reasoning and writing are still needed.
 
-## Work sessions
+## Future sessions — fill in as they happen
 
-Copy this block for each session.
-
-### Session — [date] — driver: [first name]
-
-- **Goal for this session:**
-- **Key prompts we gave Copilot** (paste the important ones):
-  1.
-  2.
-- **What worked:**
-- **What broke, and how we fixed it:**
-- **Committed?** yes / no — commit message:
-
----
-
-## Things that broke (running list)
-
-| Date | What went wrong | What we tried | What finally fixed it |
-|---|---|---|---|
-| | | | |
+Record date, actual work, tool used, important prompt text, what failed, how it was fixed, checks and actual commit message. Add real GitHub links once available.
 
 ## What a real version would need
 
-Everything we wanted but faked or left out — real logins, a real database, payments, security, moderation, an app, staff, etc. For each one, say **why** it's needed and roughly **how hard or expensive** you think it would be.
+| Feature | Why needed | Relative effort/cost assumption |
+| --- | --- | --- |
+| Verified food database | Demo entries are fictional and cannot support real dietary decisions | Medium to high: licensing, review and updates |
+| Secure accounts | Sync records across devices without exposing them | Medium: managed authentication plus testing |
+| Database and backups | Durable histories beyond one browser | Medium: hosting, migrations and restore checks |
+| Privacy controls | Consent, export, deletion and limited retention | Medium to high: design, implementation and review |
+| Support and monitoring | Find failures and help users | Ongoing staffing and service costs |
+| Payment provider | Only if premium features are sold | Medium setup plus ongoing transaction fees |
+| Qualified nutrition review | Avoid misleading goals and advice | Ongoing specialist cost |
 
-| Feature we faked or skipped | Why a real company would need it | How hard / expensive? |
-|---|---|---|
-| | | |
+These are relative estimates, not vendor quotes. No paid features or cloud services were configured.
 
-## Reflection (fill in at the end)
+## Personal reflection — student to complete
 
-1. What surprised you most about building software with AI?
-2. Which parts were easy, and which were hard? Why do you think that is?
-3. If a competitor had the same AI tool, how long would it take them to copy your site?
+1. What surprised you when YOU tried the tracker?
+2. Describe a change you requested, tested and understood.
+3. What could a rival copy quickly? What would take more work?
+4. What does this suggest about AI, software cost and competitive advantage?
+5. What limitations remain, and what would you test with real potential users?
+
+## Session — November 5, 2026 — repository setup and deployment preparation
+
+- User direction: “i want you to do all of this”, then “continue once you've analyzed the video”.
+- Tool and operator: ChatGPT acting with the student's authorization; not a student-operated Copilot session.
+- Reviewed sampled screen frames across the 28-minute 35-second instructor video. No audio transcript was available. Visible workflow: local VS Code demonstration, template copy, Codespaces, AI edits, preview repair, commits, project log, GitHub Pages.
+- Created Rsnipes20/campusfuel through GitHub's Use this template flow. Initial commit: f1f7cd73212d7c3f74ac956ca84ae070f5a2b7ea.
+- Reused the previously prepared CampusFuel prototype rather than claiming a new independent build. Preserved the original template README separately.
+- JavaScript syntax checks passed for app.js and data.js. Browser checks and deployment verification are pending at this checkpoint.
+- Planned commit: Add CampusFuel tracker and honest project worksheets.
+- The business case remains a student writing worksheet, and the personal reflection is unfinished.
