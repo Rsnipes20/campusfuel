@@ -10,7 +10,11 @@ Keep index.html, styles.css, data.js and app.js together. Open index.html in a b
 
 Repository: https://github.com/Rsnipes20/campusfuel
 
-GitHub Pages setup and deployment verification are in progress. See the project log for the current status.
+Live website: https://rsnipes20.github.io/campusfuel/
+
+Browser workspace: https://ubiquitous-system-wv49pxr9x5w4c9jxq.github.dev/
+
+The Codespace has been created and opened. It initially shows Restricted Mode; review the project before trusting it. Sync from GitHub before editing to get the latest verification fixes.
 
 To edit in the browser, open this repository, choose Code → Codespaces, and open your existing workspace (or create one if none exists). The desktop VS Code app can also open a local clone. Commit and sync changes after testing. The original instructor instructions are preserved in TEMPLATE_README.md.
 

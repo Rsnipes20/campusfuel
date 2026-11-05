@@ -1,7 +1,7 @@
 # CampusFuel project log
 
 Startup name: CampusFuel (working name)
-Live site: Not yet published
+Live site: https://rsnipes20.github.io/campusfuel/
 Repository: https://github.com/Rsnipes20/campusfuel
 
 ## Session — November 5, 2026 — AI-assisted initial build
@@ -53,3 +53,14 @@ These are relative estimates, not vendor quotes. No paid features or cloud servi
 - JavaScript syntax checks passed for app.js and data.js. Browser checks and deployment verification are pending at this checkpoint.
 - Planned commit: Add CampusFuel tracker and honest project worksheets.
 - The business case remains a student writing worksheet, and the personal reflection is unfinished.
+
+## Session continuation — November 5, 2026 — live testing and publishing
+
+- Committed the prepared tracker: 1a9e79ddc21afda105adc203ffea0b65089131ab (Add CampusFuel tracker and honest project worksheets).
+- Enabled GitHub Pages from main, repository root, with required HTTPS. GitHub reported the site live; opened the deployed page successfully.
+- Created the Codespace “ubiquitous system”. VS Code opened with the project files; it initially shows Restricted Mode. No Copilot prompt was sent in this workspace.
+- Live browser checks passed: sample total 950 kcal; adding 1.5 bananas produced 1,108 kcal displayed and 1,092 remaining; persisted after reload; removing the entry restored 950; zero servings were rejected; favourites filter and empty search worked; weekly view rendered; Week 12 simulation showed 84 days, 18 favourites and 8 routines.
+- CSV export triggered a successful browser download. The downloaded bytes were not accessible to the local checker, so CSV contents were not independently parsed in this session.
+- Issue found: the progress page's favourites count did not refresh immediately after saving a favourite. Added renderProgress() to the favourite-toggle handler. This is a real observed bug and repair, not a fabricated session.
+- Responsive CSS is included. Desktop browser rendering was reviewed; an actual phone check is still needed by the student.
+- Business-case writing and personal reflection remain for the student. No claims of interviews, user research, or completed student practice have been added.
