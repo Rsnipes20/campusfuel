@@ -72,4 +72,5 @@ These are relative estimates, not vendor quotes. No paid features or cloud servi
 - User approved targeting university students who go to the gym, free basic tracking and a proposed CAD $3/month planning tier. This is a proposed business model, not an implemented payment feature or validated demand.
 - Expanded from 16 to 44 fictional foods across nine categories. Added a labelled category selector, matching-food count and clear-filters button. Category, text search and favourites filter work together. Existing food IDs remain stable for saved diaries.
 - Versioned both data and application script links to avoid reusing an older catalogue or application script after publishing.
-- Tests are recorded separately after execution; no student testing is claimed here.
+- Assistant checks passed: JavaScript syntax and all 44 food records validated; Vegetables plus “broccoli” returned one matching food; two servings added 70 kcal (950 to 1,020); the entry persisted after reload; the favourites filter included the saved food; an incompatible category/search showed an empty state; clearing filters restored all 44 foods. Test additions were removed afterwards.
+- Published feature commit: edb367e5d3f06206a798d49fbf5173ab7937deeb. GitHub Pages deployment succeeded. Desktop category display reviewed; no phone check or student-performed test is claimed.
