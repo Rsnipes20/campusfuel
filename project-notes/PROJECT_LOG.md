@@ -64,3 +64,12 @@ These are relative estimates, not vendor quotes. No paid features or cloud servi
 - Issue found: the progress page's favourites count did not refresh immediately after saving a favourite. Added renderProgress() to the favourite-toggle handler. This is a real observed bug and repair, not a fabricated session.
 - Responsive CSS is included. Desktop browser rendering was reviewed; an actual phone check is still needed by the student.
 - Business-case writing and personal reflection remain for the student. No claims of interviews, user research, or completed student practice have been added.
+
+
+## Session — November 6, 2026 — expanded food catalogue
+
+- User requested a basic food category/search expansion and asked the assistant to choose whichever fits the rubric. Selected fictional local sample data, consistent with the assignment; no external nutrition API or libraries.
+- User approved targeting university students who go to the gym, free basic tracking and a proposed CAD $3/month planning tier. This is a proposed business model, not an implemented payment feature or validated demand.
+- Expanded from 16 to 44 fictional foods across nine categories. Added a labelled category selector, matching-food count and clear-filters button. Category, text search and favourites filter work together. Existing food IDs remain stable for saved diaries.
+- Versioned both data and application script links to avoid reusing an older catalogue or application script after publishing.
+- Tests are recorded separately after execution; no student testing is claimed here.
